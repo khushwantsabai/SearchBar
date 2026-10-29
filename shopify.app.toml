@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "adf4c6b0b85e225c2805608131c77af6"
-application_url = "https://example.com"
+application_url = "https://search-bar-indol.vercel.app"
 embedded = true
 name = "SearchBar"
 
@@ -75,7 +75,11 @@ api_version = "2026-10"
   query_filter = "product.status:'ACTIVE'"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [
+  "https://search-bar-indol.vercel.app/api/auth",
+  "https://search-bar-indol.vercel.app/auth/callback",
+  "https://search-bar-indol.vercel.app/auth/shopify/callback"
+]
 
 [build]
 include_config_on_deploy = true
