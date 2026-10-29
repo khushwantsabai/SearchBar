@@ -1,0 +1,254 @@
+{% comment %}
+  SearchBar App Block — Storefront Search & Predictive Autocomplete
+{% endcomment %}
+
+<div
+  class="sb-wrapper sb-{{ block.settings.template_style }}"
+  data-shop-domain="{{ shop.permanent_domain }}"
+  style="max-width: {{ block.settings.max_width }}px;"
+>
+  {% if block.settings.template_style == 'banner-search' %}
+    <div
+      class="sb-banner-container"
+      style="{% if block.settings.banner_image != blank %}background-image: url('{{ block.settings.banner_image | image_url: width: 1200 }}');{% endif %}"
+    >
+      <div class="sb-banner-overlay"></div>
+  {% endif %}
+
+  <form
+    action="{{ routes.search_url }}"
+    method="get"
+    role="search"
+    class="sb-form"
+  >
+    <input type="hidden" name="type" value="product">
+    <input type="hidden" name="options[prefix]" value="last">
+
+    <div
+      class="sb-input-container"
+      style="
+        background-color: {{ block.settings.bg_color }};
+        border-color: {{ block.settings.border_color }};
+        border-radius: {{ block.settings.border_radius }}px;
+      "
+    >
+      {% if block.settings.template_style == 'premium-split-search' and block.settings.banner_image != blank %}
+        <div
+          class="sb-split-image"
+          style="background-image: url('{{ block.settings.banner_image | image_url: width: 200 }}');"
+        ></div>
+      {% endif %}
+
+      {% if block.settings.template_style == 'image-accent-search' and block.settings.banner_image != blank %}
+        <img
+          src="{{ block.settings.banner_image | image_url: width: 80 }}"
+          alt="Brand"
+          class="sb-accent-img"
+          loading="lazy"
+          width="40"
+          height="40"
+        >
+      {% endif %}
+
+      {% if block.settings.show_icon and block.settings.icon_position == 'left' %}
+        <span class="sb-icon" style="color: {{ block.settings.icon_color }}; margin-left: 8px;">
+          <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </span>
+      {% endif %}
+
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ block.settings.placeholder | escape }}"
+        class="sb-input"
+        style="color: {{ block.settings.text_color }};"
+        role="combobox"
+        aria-expanded="false"
+        aria-owns="sb-predictive-list-{{ block.id }}"
+        aria-haspopup="listbox"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+      >
+
+      {% if block.settings.show_icon and block.settings.icon_position == 'right' %}
+        <span class="sb-icon" style="color: {{ block.settings.icon_color }}; margin-right: 8px;">
+          <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </span>
+      {% endif %}
+
+      {% if block.settings.show_button %}
+        <button
+          type="submit"
+          class="sb-btn"
+          style="
+            background-color: {{ block.settings.button_bg_color }};
+            color: {{ block.settings.button_text_color }};
+            border-radius: {{ block.settings.button_border_radius }}px;
+          "
+        >
+          {% if block.settings.template_style == 'modern-rounded' %}
+            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          {% else %}
+            <span>{{ block.settings.button_text | escape }}</span>
+          {% endif %}
+        </button>
+      {% endif %}
+    </div>
+
+    <!-- Predictive Search Results Dropdown -->
+    <div class="sb-predictive-dropdown" id="sb-dropdown-{{ block.id }}">
+      <div class="sb-loading-state" style="display: none;">Searching products...</div>
+      <div class="sb-empty-state" style="display: none;">No products found.</div>
+      <ul
+        class="sb-results-list"
+        id="sb-predictive-list-{{ block.id }}"
+        role="listbox"
+      ></ul>
+      <div class="sb-footer">
+        <a href="{{ routes.search_url }}" class="sb-view-all">View all results &rarr;</a>
+      </div>
+    </div>
+  </form>
+
+  {% if block.settings.template_style == 'banner-search' %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "SearchBar Storefront",
+  "target": "section",
+  "stylesheet": "search-bar.css",
+  "javascript": "search-bar.js",
+  "settings": [
+    {
+      "type": "select",
+      "id": "template_style",
+      "label": "Search Bar Template",
+      "options": [
+        { "value": "classic", "label": "1. Classic Search (Free)" },
+        { "value": "modern-rounded", "label": "2. Modern Rounded (Pro)" },
+        { "value": "minimal-outline", "label": "3. Minimal Outline (Pro)" },
+        { "value": "bold-button", "label": "4. Bold Search Button (Pro)" },
+        { "value": "image-accent", "label": "5. Image Accent Search (Advanced)" },
+        { "value": "banner-search", "label": "6. Banner Search (Advanced)" },
+        { "value": "premium-split", "label": "7. Premium Split Search (Advanced)" },
+        { "value": "featured", "label": "8. Featured Search (Advanced)" }
+      ],
+      "default": "modern-rounded"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder Text",
+      "default": "Search products..."
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum Width (px)",
+      "min": 280,
+      "max": 1000,
+      "step": 20,
+      "default": 640
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#e5e7eb"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius (px)",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#111827"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show Search Icon",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon Position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#6b7280"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show Search Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Label",
+      "default": "Search"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#2563eb"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button Border Radius (px)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Optional Image / Banner (Advanced)"
+    }
+  ]
+}
+{% endschema %}
+

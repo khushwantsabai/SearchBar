@@ -1,0 +1,10 @@
+{
+  "search": {
+    "placeholder": "Search products...",
+    "submit": "Search",
+    "view_all": "View all results",
+    "no_results": "No products found",
+    "loading": "Searching..."
+  }
+}
+

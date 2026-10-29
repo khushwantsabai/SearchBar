@@ -1,0 +1,89 @@
+// Production Prisma Schema for PostgreSQL
+// Use with: DATABASE_URL="postgresql://user:pass@host:5432/dbname?schema=public"
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Session {
+  id                  String    @id
+  shop                String
+  state               String
+  isOnline            Boolean   @default(false)
+  scope               String?
+  expires             DateTime?
+  accessToken         String
+  userId              BigInt?
+  firstName           String?
+  lastName            String?
+  email               String?
+  accountOwner        Boolean   @default(false)
+  locale              String?
+  collaborator        Boolean?  @default(false)
+  emailVerified       Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+model Shop {
+  id             String                @id @default(uuid())
+  shopDomain     String                @unique
+  installedAt    DateTime              @default(now())
+  uninstalledAt  DateTime?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  subscriptions  Subscription[]
+  configurations SearchConfiguration[]
+  assets         UploadedAsset[]
+}
+
+model Subscription {
+  id                    String    @id @default(uuid())
+  shopId                String
+  shop                  Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  plan                  String    @default("FREE")
+  shopifySubscriptionId String?
+  status                String    @default("ACTIVE")
+  billingInterval       String    @default("EVERY_30_DAYS")
+  currentPeriodEnd      DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([shopId])
+}
+
+model SearchConfiguration {
+  id             String   @id @default(uuid())
+  shopId         String
+  shop           Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  name           String
+  templateId     String
+  planAtCreation String   @default("FREE")
+  configuration  String   @db.Text
+  isPublished    Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([shopId])
+  @@index([isPublished])
+}
+
+model UploadedAsset {
+  id          String   @id @default(uuid())
+  shopId      String
+  shop        Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  storageKey  String
+  publicUrl   String
+  contentType String
+  fileSize    Int
+  createdAt   DateTime @default(now())
+
+  @@index([shopId])
+}
+

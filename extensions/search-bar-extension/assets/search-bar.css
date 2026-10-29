@@ -1,0 +1,333 @@
+/* SearchBar Scoped Styles — Lightweight, Theme-Safe */
+
+.sb-wrapper {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.sb-wrapper * {
+  box-sizing: border-box;
+}
+
+.sb-form {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.sb-input-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sb-input {
+  flex: 1 1 auto;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 15px;
+  min-width: 0;
+  box-shadow: none !important;
+}
+
+.sb-input::placeholder {
+  opacity: 0.8;
+}
+
+.sb-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.sb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sb-btn:hover {
+  opacity: 0.92;
+}
+
+.sb-btn:active {
+  transform: scale(0.98);
+}
+
+/* Template Specific Layouts */
+
+/* 1. Classic Search */
+.sb-classic .sb-input-container {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0 14px;
+  height: 44px;
+}
+
+/* 2. Modern Rounded */
+.sb-modern-rounded .sb-input-container {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 4px 6px 4px 18px;
+  height: 48px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sb-modern-rounded .sb-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #2563eb;
+  color: #ffffff;
+  padding: 0;
+}
+
+/* 3. Minimal Outline */
+.sb-minimal-outline .sb-input-container {
+  background-color: #ffffff;
+  border: 1.5px solid #111827;
+  border-radius: 4px;
+  padding: 0 12px;
+  height: 42px;
+}
+
+/* 4. Bold Search Button */
+.sb-bold-button .sb-input-container {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 3px 3px 3px 14px;
+  height: 48px;
+}
+
+.sb-bold-button .sb-btn {
+  height: 100%;
+  padding: 0 18px;
+  background-color: #111827;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* 5. Image Accent Search */
+.sb-image-accent .sb-input-container {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 4px 12px;
+  height: 52px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  gap: 10px;
+}
+
+.sb-image-accent .sb-accent-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* 6. Banner Search */
+.sb-banner-container {
+  position: relative;
+  width: 100%;
+  min-height: 180px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background-size: cover;
+  background-position: center;
+}
+
+.sb-banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.45);
+  z-index: 1;
+}
+
+.sb-banner .sb-input-container {
+  position: relative;
+  z-index: 2;
+  background-color: #ffffff;
+  border-radius: 28px;
+  padding: 4px 6px 4px 18px;
+  height: 54px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  max-width: 540px;
+}
+
+/* 7. Premium Split Search */
+.sb-premium-split .sb-input-container {
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 52px;
+  padding: 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.sb-split-image {
+  width: 58px;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+/* 8. Featured Search */
+.sb-featured .sb-input-container {
+  background-color: #ffffff;
+  border: 2px solid #e0e7ff;
+  border-radius: 14px;
+  padding: 4px 8px 4px 16px;
+  height: 52px;
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.08);
+  gap: 8px;
+}
+
+/* Predictive Search Results Dropdown */
+.sb-predictive-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  z-index: 9999;
+  overflow: hidden;
+  display: none;
+  text-align: left;
+}
+
+.sb-predictive-dropdown.sb-is-active {
+  display: block;
+}
+
+.sb-results-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.sb-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #1e293b;
+  transition: background-color 0.15s ease;
+}
+
+.sb-result-item:hover,
+.sb-result-item:focus-visible,
+.sb-result-item.sb-item-focused {
+  background-color: #f8fafc;
+  outline: none;
+}
+
+.sb-product-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: cover;
+  background-color: #f1f5f9;
+  flex-shrink: 0;
+}
+
+.sb-product-details {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sb-product-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 0 2px 0;
+}
+
+.sb-product-price {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+.sb-footer {
+  border-top: 1px solid #f1f5f9;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fcfcfc;
+}
+
+.sb-view-all {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.sb-view-all:hover {
+  text-decoration: underline;
+}
+
+.sb-empty-state,
+.sb-loading-state {
+  padding: 20px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Accessibility & Focus */
+.sb-input:focus-visible {
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .sb-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+

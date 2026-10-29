@@ -1,0 +1,194 @@
+{% comment %}
+  SearchBar Floating / Header App Embed
+{% endcomment %}
+
+{% if block.settings.enable_embed %}
+  <div
+    class="sb-wrapper sb-embed sb-{{ block.settings.template_style }}"
+    data-shop-domain="{{ shop.permanent_domain }}"
+    style="
+      position: {% if block.settings.position == 'floating' %}fixed{% else %}relative{% endif %};
+      {% if block.settings.position == 'floating' %}
+        bottom: 24px;
+        right: 24px;
+        z-index: 99999;
+        max-width: 380px;
+      {% else %}
+        max-width: {{ block.settings.max_width }}px;
+      {% endif %}
+    "
+  >
+    <form
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      class="sb-form"
+    >
+      <input type="hidden" name="type" value="product">
+      <div
+        class="sb-input-container"
+        style="
+          background-color: {{ block.settings.bg_color }};
+          border-color: {{ block.settings.border_color }};
+          border-radius: {{ block.settings.border_radius }}px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        "
+      >
+        <span class="sb-icon" style="color: {{ block.settings.icon_color }}; margin-left: 12px;">
+          <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </span>
+
+        <input
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ block.settings.placeholder | escape }}"
+          class="sb-input"
+          style="color: {{ block.settings.text_color }};"
+          role="combobox"
+          aria-expanded="false"
+          aria-owns="sb-predictive-list-embed"
+          autocomplete="off"
+        >
+
+        {% if block.settings.show_button %}
+          <button
+            type="submit"
+            class="sb-btn"
+            style="
+              background-color: {{ block.settings.button_bg_color }};
+              color: {{ block.settings.button_text_color }};
+              border-radius: {{ block.settings.button_border_radius }}px;
+              margin: 4px;
+              padding: 0 14px;
+              height: 36px;
+            "
+          >
+            {{ block.settings.button_text | escape }}
+          </button>
+        {% endif %}
+      </div>
+
+      <!-- Predictive Dropdown -->
+      <div class="sb-predictive-dropdown" id="sb-dropdown-embed">
+        <ul class="sb-results-list" id="sb-predictive-list-embed"></ul>
+        <div class="sb-footer">
+          <a href="{{ routes.search_url }}" class="sb-view-all">View all results &rarr;</a>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "SearchBar Floating Search",
+  "target": "body",
+  "stylesheet": "search-bar.css",
+  "javascript": "search-bar.js",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_embed",
+      "label": "Enable Floating Search Bar",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Display Position",
+      "options": [
+        { "value": "floating", "label": "Floating Bottom-Right" },
+        { "value": "standard", "label": "Standard Inline" }
+      ],
+      "default": "floating"
+    },
+    {
+      "type": "select",
+      "id": "template_style",
+      "label": "Template Style",
+      "options": [
+        { "value": "modern-rounded", "label": "Modern Rounded" },
+        { "value": "minimal-outline", "label": "Minimal Outline" },
+        { "value": "classic", "label": "Classic Search" }
+      ],
+      "default": "modern-rounded"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder Text",
+      "default": "Quick product search..."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#e2e8f0"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius (px)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#2563eb"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Label",
+      "default": "Search"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Color",
+      "default": "#2563eb"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button Border Radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "default": 18
+    }
+  ]
+}
+{% endschema %}
+
