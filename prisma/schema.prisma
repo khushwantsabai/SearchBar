@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model Session {
@@ -65,7 +66,7 @@ model SearchConfiguration {
   name           String
   templateId     String   // e.g. "classic-search", "modern-rounded", "minimal-outline", etc.
   planAtCreation String   @default("FREE")
-  configuration  String   // JSON encoded styling and options
+  configuration  String   @db.Text
   isPublished    Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
