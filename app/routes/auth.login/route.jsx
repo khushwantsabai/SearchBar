@@ -5,24 +5,28 @@ import { login } from "../../shopify.server";
 import { loginErrorMessage } from "./error.server";
 
 export const loader = async ({ request }) => {
-  const errors = loginErrorMessage(await login(request));
-
-  return { errors };
+  try {
+    const errors = loginErrorMessage(await login(request));
+    return { errors };
+  } catch (error) {
+    return { errors: {} };
+  }
 };
 
 export const action = async ({ request }) => {
-  const errors = loginErrorMessage(await login(request));
-
-  return {
-    errors,
-  };
+  try {
+    const errors = loginErrorMessage(await login(request));
+    return { errors };
+  } catch (error) {
+    return { errors: { shop: "Failed to log in. Please verify your shop domain." } };
+  }
 };
 
 export default function Auth() {
   const loaderData = useLoaderData();
   const actionData = useActionData();
   const [shop, setShop] = useState("");
-  const { errors } = actionData || loaderData;
+  const { errors } = actionData || loaderData || {};
 
   return (
     <AppProvider embedded={false}>
@@ -36,7 +40,7 @@ export default function Auth() {
               value={shop}
               onChange={(e) => setShop(e.currentTarget.value)}
               autocomplete="on"
-              error={errors.shop}
+              error={errors?.shop}
             ></s-text-field>
             <s-button type="submit">Log in</s-button>
           </s-section>
